@@ -60,7 +60,7 @@ int main() {
     return 1;
   }
   int hypr_fd = tiny__init_hypr_socket(1);
-  // int wlfd = wl_display_get_fd(app.display);
+  int wlfd = wl_display_get_fd(app.display);
 
   struct itimerspec ts;
   ts.it_interval.tv_sec = 1; // repeat interval
@@ -73,16 +73,16 @@ int main() {
     return 1;
   }
 
-  struct pollfd fds[2];
+  struct pollfd fds[3];
 
-  // fds[0].fd = wlfd;
-  // fds[0].events = POLLIN;
-
-  fds[0].fd = clock_fd;
+  fds[0].fd = wlfd;
   fds[0].events = POLLIN;
 
-  fds[1].fd = hypr_fd;
-  fds[1].events = (hypr_fd >= 0) ? POLLIN : 0;
+  fds[1].fd = clock_fd;
+  fds[1].events = POLLIN;
+
+  fds[2].fd = hypr_fd;
+  fds[2].events = (hypr_fd >= 0) ? POLLIN : 0;
 
   static clock_state_t clock_state;
   static ws_state_t ws_state;
@@ -117,22 +117,20 @@ int main() {
 
   wl_display_flush(app.display);
 
-  int ctr = 0;
-
   while (running) {
-    int ret = poll(fds, (hypr_fd >= 0) ? 2 : 1, 15000);
+    int ret = poll(fds, (hypr_fd >= 0) ? 3 : 2, 15000);
     if (ret < 0) {
       continue;
     }
 
-    if (fds[0].revents & POLLIN) {
+    if (fds[1].revents & POLLIN) {
       uint64_t expirations;
       read(clock_fd, &expirations, sizeof(expirations)); // clear the event
       tiny__clock_update(&modules[1]);
       app.dirty = 1;
     }
 
-    if (hypr_fd >= 0 && (fds[1].revents & POLLIN)) {
+    if (hypr_fd >= 0 && (fds[2].revents & POLLIN)) {
       int count = tiny__query_workspaces(hypr_ws);
       if (count >= 0) {
         if (!tiny__update_workspaces_socket(hypr_fd, hypr_ws)) {
@@ -143,11 +141,8 @@ int main() {
       }
     }
 
-    /*if (fds[0].revents & POLLIN) {
+    if (fds[0].revents & POLLIN) {
       wl_display_dispatch(app.display);
-    }*/
-
-    while (wl_display_dispatch_pending(app.display) > 0) {
     }
 
     if (app.dirty) {
@@ -160,6 +155,7 @@ int main() {
         wl_surface_commit(app.surface);
 
         tiny__schedule_frame(&app);
+        app.dirty = 0;
       } else {
         wl_callback_destroy(app.frame_cb);
         app.frame_cb = NULL;
