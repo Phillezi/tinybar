@@ -68,11 +68,6 @@ static void tiny__frame_done(void *d, struct wl_callback *cb, uint32_t t) {
 
   wl_callback_destroy(cb);
   app->frame_cb = NULL;
-
-  /* allow next render only if something changed */
-  if (app->configured) {
-    app->dirty = 1;
-  }
 }
 
 static void tiny__configure(void *data, struct zwlr_layer_surface_v1 *l,
