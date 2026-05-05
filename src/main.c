@@ -30,7 +30,7 @@ int main() {
   sigaction(SIGINT, &sa, NULL);
   sigaction(SIGTERM, &sa, NULL);
 
-  TINY__Application app = {1,    0,    0,    0,    20,   0,    -1,   NULL,
+  TINY__Application app = {1,    0,    0,    0,    15,   0,    -1,   NULL,
                            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
   if (tiny__init(&app)) {

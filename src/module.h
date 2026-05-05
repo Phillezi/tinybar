@@ -34,9 +34,9 @@ static void tiny__draw_modules(void *data, bar_module_t *modules,
   for (int i = 0; i < module_count; i++) {
     if (i == module_count - 1) {
       x_right -= modules[i].width;
-      modules[i].draw(data, &modules[i], x_right, 10);
+      modules[i].draw(data, &modules[i], x_right, 2);
     } else {
-      modules[i].draw(data, &modules[i], x_left, 10);
+      modules[i].draw(data, &modules[i], x_left, 2);
       x_left += modules[i].width + 10;
     }
   }
