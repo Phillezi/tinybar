@@ -35,8 +35,8 @@ static void tiny__workspaces_to_string(HyprWorkspace workspaces[], char *out,
                                        size_t out_size);
 
 // Initialize a Hyprland socket.
-// socket2 == 0 → main socket (.socket.sock) for querying
-// socket2 != 0 → event socket (.socket2.sock) for reading workspace events
+// socket2 == 0 => main socket (.socket.sock) for querying
+// socket2 != 0 => event socket (.socket2.sock) for reading workspace events
 static int tiny__init_hypr_socket(int socket2) {
   const char *sig = getenv("HYPRLAND_INSTANCE_SIGNATURE");
   if (!sig)
@@ -214,6 +214,8 @@ static void tiny__workspaces_to_string(HyprWorkspace workspaces[], char *out,
   out[0] = '\0';
   for (int i = 0; i < MAX_WORKSPACES; i++) {
     if (i > 0 && !workspaces[i].focused && !workspaces[i - 1].focused)
+      strncat(out, " ", out_size - strlen(out) - 1);
+    else if (i == 0 && !workspaces[i].focused)
       strncat(out, " ", out_size - strlen(out) - 1);
 
     if (workspaces[i].focused) {
