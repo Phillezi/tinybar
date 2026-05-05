@@ -108,18 +108,21 @@ static int tiny__query_workspaces(HyprWorkspace ws_array[MAX_WORKSPACES]) {
 }
 
 // Read workspace events from the event socket (.socket2.sock)
-static void
+// returns 0 if the event was a workspaces event and everything went ok
+static int
 tiny__update_workspaces_socket(int hypr_fd,
                                HyprWorkspace ws_array[MAX_WORKSPACES]) {
   if (hypr_fd < 0 || !ws_array)
-    return;
+    return 1;
 
   char buf[1024];
   ssize_t n = read(hypr_fd, buf, sizeof(buf) - 1);
   if (n <= 0)
-    return;
+    return 1;
 
   buf[n] = '\0';
+
+  int workspace_evt_found = 0;
 
   char *line = strtok(buf, "\n");
   while (line) {
@@ -130,9 +133,11 @@ tiny__update_workspaces_socket(int hypr_fd,
         // printf("id:%d\n", wsid);
         ws_array[wsid - 1].focused = true;
       }
+      workspace_evt_found = 1;
     }
     line = strtok(NULL, "\n");
   }
+  return workspace_evt_found ? 0 : 1;
 }
 
 static int tiny__parse_workspaces(const char *buf, HyprWorkspace workspaces[],

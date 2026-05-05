@@ -133,10 +133,11 @@ int main() {
     if (hypr_fd >= 0 && (fds[2].revents & POLLIN)) {
       int count = tiny__query_workspaces(hypr_ws);
       if (count >= 0) {
-        tiny__update_workspaces_socket(hypr_fd, hypr_ws);
-        tiny__workspaces_to_string(hypr_ws, workspaces, workspaces_size);
-        snprintf(ws_state.text, sizeof(ws_state.text), "%s", workspaces);
-        app.dirty = 1;
+        if (!tiny__update_workspaces_socket(hypr_fd, hypr_ws)) {
+          tiny__workspaces_to_string(hypr_ws, workspaces, workspaces_size);
+          snprintf(ws_state.text, sizeof(ws_state.text), "%s", workspaces);
+          app.dirty = 1;
+        }
       }
     }
 
