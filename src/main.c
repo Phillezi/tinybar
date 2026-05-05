@@ -118,7 +118,7 @@ int main() {
   wl_display_flush(app.display);
 
   while (running) {
-    int ret = poll(fds, (hypr_fd >= 0) ? 3 : 2, 15000);
+    int ret = poll(fds, (hypr_fd >= 0) ? 3 : 2, 150);
     if (ret < 0) {
       continue;
     }
