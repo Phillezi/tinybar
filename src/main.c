@@ -63,6 +63,9 @@ int main() {
   int hypr_fd = tiny__init_hypr_socket(1);
   int wlfd = wl_display_get_fd(app.display);
 
+  // FIXME: we make sure the clock is updated every second, but it might not
+  // happen on the sub second instant that the second changes. Maybe we can sync
+  // somehow
   struct itimerspec ts;
   ts.it_interval.tv_sec = 1; // repeat interval
   ts.it_interval.tv_nsec = 0;
