@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <wayland-client-protocol.h>
 
+#include "blocks.h"
 #include "clock.h"
 #include "hyprland.h"
 #include "wayland.h"
@@ -86,10 +87,12 @@ int main() {
 
   static clock_state_t clock_state;
   static ws_state_t ws_state;
+  static blocks_state_t blocks_state = {"[][][][0]"};
 
   static bar_module_t modules[] = {
       {tiny__ws_update, tiny__ws_draw, 0, &ws_state},
-      {tiny__clock_update, tiny__clock_draw, 0, &clock_state}};
+      {tiny__clock_update, tiny__clock_draw, 0, &clock_state},
+      {tiny__blocks_update, tiny__blocks_draw, 0, &blocks_state}};
 
   static const int module_count = sizeof(modules) / sizeof(modules[0]);
 
@@ -105,6 +108,7 @@ int main() {
     snprintf(ws_state.text, sizeof(ws_state.text), "%s", workspaces);
     app.dirty = 1;
   }
+  tiny__blocks_update(&modules[2]);
 
   tiny__draw_modules(&app, modules, module_count, app.width);
 

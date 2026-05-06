@@ -10,6 +10,10 @@
 #include "module.h"
 #include "wayland.h"
 
+typedef struct {
+  char text[64];
+} clock_state_t;
+
 static void tiny__clock_update(bar_module_t *m) {
   clock_state_t *s = (clock_state_t *)m->state;
 

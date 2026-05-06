@@ -9,6 +9,11 @@
 #include "module.h"
 #include "wayland.h"
 
+typedef struct {
+  char text[128];
+  char prev_text[128];
+} ws_state_t;
+
 static void tiny__ws_update(bar_module_t *m) {
   ws_state_t *s = (ws_state_t *)m->state;
   // TODO: modify the state externally
