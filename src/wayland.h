@@ -124,7 +124,7 @@ static int tiny__create_buffer(TINY__Application *app) {
 
   app->buffer = wl_shm_pool_create_buffer(
       pool, 0, app->width, app->height, app->width * 4,
-      WL_SHM_FORMAT_XRGB8888); // stride hardcoded to 4
+      WL_SHM_FORMAT_ARGB8888); // stride hardcoded to 4
 
   wl_shm_pool_destroy(pool);
 

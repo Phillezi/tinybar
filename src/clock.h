@@ -17,7 +17,7 @@ static void tiny__clock_update(bar_module_t *m) {
   struct tm tm;
   localtime_r(&t, &tm);
 
-  strftime(s->text, sizeof(s->text), "%H:%M:%S", &tm);
+  strftime(s->text, sizeof(s->text), "%Y-%m-%d %H:%M:%S", &tm);
   m->width = strlen(s->text) * FONT_ADV;
 }
 
