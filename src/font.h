@@ -5,8 +5,11 @@
 
 #include <stdint.h>
 
+#define FONT_CHARS_LEN 13
+#define FONT_CHAR_HEIGHT 5
+
 // 5x5 bitmap font for '0'-'9', ':', '[', ']'
-static const uint8_t font[13][5] = {
+static const uint8_t font[FONT_CHARS_LEN][FONT_CHAR_HEIGHT] = {
     // 0
     {0b01110, 0b10001, 0b10001, 0b10001, 0b01110},
     // 1
@@ -34,5 +37,43 @@ static const uint8_t font[13][5] = {
     // ] (right bracket)
     {0b01110, 0b00010, 0b00010, 0b00010, 0b01110},
 };
+/*
+
+#define ICONS_LEN 15
+#define ICON_HEIGHT 5
+#define ICON_INDEX_BAT_0 0
+
+static const uint8_t icons[ICONS_LEN][ICON_HEIGHT] = {
+    // bat_0
+    {},
+    // bat_5
+    {},
+    // bat_10
+    {},
+    // bat_15
+    {},
+    // bat_20
+    {},
+    // bat_30
+    {},
+    // bat_40
+    {},
+    // bat_50
+    {},
+    // bat_60
+    {},
+    // bat_70
+    {},
+    // bat_80
+    {},
+    // bat_90
+    {},
+    // bat_95
+    {},
+    // bat_100
+    {},
+    // bat_charging
+    {},
+};*/
 
 #endif // !TINY__FONT_H

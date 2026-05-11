@@ -90,7 +90,7 @@ int main() {
 
   static clock_state_t clock_state;
   static ws_state_t ws_state;
-  static blocks_state_t blocks_state = {"[][][][0]"};
+  static blocks_state_t blocks_state = {"[][][][0]", 1, 67, 0};
 
   static bar_module_t modules[] = {
       {tiny__ws_update, tiny__ws_draw, 0, &ws_state},
@@ -164,6 +164,7 @@ int main() {
         tiny__schedule_frame(&app);
         app.dirty = 0;
       } else {
+        // App got dirty again before the sceduled frame is done, destroy it.
         wl_callback_destroy(app.frame_cb);
         app.frame_cb = NULL;
       }
